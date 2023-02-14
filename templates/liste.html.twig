@@ -1,0 +1,52 @@
+<h1>Le nombre de formation est <i>{{formation |length}}</i></h1>
+<table border=1>
+    <tr>
+        <th>Ref</th>
+        <th>Titre</th>
+        <th>Description</th>
+        <th>Date Debut</th>
+        <th>Date fin</th>
+        <th>Nombre Participant</th>
+    </tr>
+    {% for f in formation %}
+        <tr>
+            <td>{{ f.ref }}</td>
+            <td>{{ f.Titre |upper }}</td>
+            <td>{{ f.Description }}</td>
+            <td>{{ f.date_debut }}</td>
+            <td>{{ f.date_fin }}</td>
+            <td>{{ f.nb_participants }}</td>
+            <td>
+                {% if f.nb_participants==0 %}
+                    <form action="{{path('D',{'titre':f.Titre})}}" method="">
+                        {# <button type="submit"> #}
+                        <input type="submit" value="participer " >
+                    </form>
+                {% endif %}
+            </td>
+        </tr>
+        {# {% if 'theorique' in f.Description %}#}
+            {#Titre des formations théorique:#}
+                {#<ul><li>{{ f.Titre }}</li></ul>#}
+        {#{% endif %}#}
+        {% else %} Tableau Vide!
+    {% endfor %}
+</table>
+Titre des formations théorique:
+{%for ff in formation|filter(ff=>'theorique' in ff.Description)  %}
+    <ul><li>{{ ff.Titre }}</li></ul>
+{%endfor%}
+{#Calcule du max#}
+{% set max=0 %}
+{% for f in formation %}
+    {% if f.nb_participants > max %}
+        {% set max = f.nb_participants %}
+    {%endif%}
+{% endfor%}
+{# Affichage de max#}
+{% for f in formation %}
+    {% if f.nb_participants == max %}
+        Le titre de max est: <b>{{f.Titre}}</b>
+    {%endif%}
+{% endfor%}
+
